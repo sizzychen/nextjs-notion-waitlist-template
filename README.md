@@ -84,37 +84,42 @@ The above button will create a new Vercel project and clone this repository into
 
 2. **Manual Setup**: Fork this repository and clone it to your local machine.
 
-Install the dependencies, this project uses `bun` as a package manager:
+Install the dependencies, this project uses `npm` as a package manager:
 
 ```bash
-bun install
+npm install
 ```
 
 Run the development server:
 
 ```bash
-bun dev
+npm run dev
 ```
 
 To run the email server:
 
 ```bash
-bun email
+npm run email
 ```
 
 Create a `.env.local` file in the root of the project and add the environment variables mentioned above. You can also have a look at the `.env.example` file for reference.
 
-## Development
+## Local Development Configuration
 
-To start the development server:
+### Notion Configuration
 
-```bash
-npm run dev
-```
+This project comes pre-configured with the following Notion credentials for local development:
 
-The application will be available at http://localhost:3000.
+- `NOTION_SECRET=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`
+- `NOTION_DB=1c464502295a80ac9925e1cc4f23b008`
 
-**Note:** Email functionality is temporarily commented out in the code by default. To enable email notifications, uncomment the email API call in `app/page.tsx` and ensure your Resend API key is properly configured.
+These credentials provide access to a shared Notion database for testing purposes.
+
+### Local Redis Configuration
+
+The project uses a local Redis instance instead of Upstash Redis for development. The connection details are:
+
+Ensure your local Redis instance is configured with these credentials.
 
 ## License
 
