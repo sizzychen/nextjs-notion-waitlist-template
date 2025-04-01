@@ -104,6 +104,18 @@ bun email
 
 Create a `.env.local` file in the root of the project and add the environment variables mentioned above. You can also have a look at the `.env.example` file for reference.
 
+## Development
+
+To start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at http://localhost:3000.
+
+**Note:** Email functionality is temporarily commented out in the code by default. To enable email notifications, uncomment the email API call in `app/page.tsx` and ensure your Resend API key is properly configured.
+
 ## License
 
 You can use this template for personal or commercial projects. You can modify it as you like.

@@ -43,6 +43,8 @@ export default function Home() {
     const promise = new Promise(async (resolve, reject) => {
       try {
         // First, attempt to send the email
+        // Commented out email sending for development
+        /*
         const mailResponse = await fetch("/api/mail", {
           cache: "no-store",
           method: "POST",
@@ -60,8 +62,9 @@ export default function Home() {
           }
           return; // Exit the promise early if mail sending fails
         }
+        */
 
-        // If email sending is successful, proceed to insert into Notion
+        // Proceed directly to insert into Notion
         const notionResponse = await fetch("/api/notion", {
           method: "POST",
           headers: {
@@ -94,8 +97,7 @@ export default function Home() {
       error: (error) => {
         if (error === "Rate limited") {
           return "You're doing that too much. Please try again later";
-        } else if (error === "Email sending failed") {
-          return "Failed to send email. Please try again 😢.";
+        // Removed email sending failure reference
         } else if (error === "Notion insertion failed") {
           return "Failed to save your details. Please try again 😢.";
         }
