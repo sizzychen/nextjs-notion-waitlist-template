@@ -37,8 +37,3 @@ logs
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# clacky-related configuration
-.1024*
-!.1024
-.breakpoints
