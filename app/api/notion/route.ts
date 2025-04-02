@@ -1,8 +1,15 @@
 import { Client } from "@notionhq/client";
 import { NextResponse } from "next/server";
 
+interface NotionRequestBody {
+  name: string;
+  email: string;
+  profession?: string;
+  referralSource: string;
+}
+
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: NotionRequestBody = await request.json();
   try {
     const notion = new Client({ auth: process.env.NOTION_SECRET });
     const response = await notion.pages.create({
@@ -21,6 +28,28 @@ export async function POST(request: Request) {
               type: "text",
               text: {
                 content: body?.name,
+              },
+            },
+          ],
+        },
+        Profession: {
+          type: "rich_text",
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: body?.profession || "",
+              },
+            },
+          ],
+        },
+        "Referral Source": {
+          type: "rich_text",
+          rich_text: [
+            {
+              type: "text",
+              text: {
+                content: body?.referralSource,
               },
             },
           ],

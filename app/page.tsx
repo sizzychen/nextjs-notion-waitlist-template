@@ -12,6 +12,9 @@ import Footer from "@/components/footer";
 export default function Home() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [profession, setProfession] = useState<string>("");
+  const [referralSource, setReferralSource] = useState<string>("");
+  const [otherReferralSource, setOtherReferralSource] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,14 +25,34 @@ export default function Home() {
     setName(event.target.value);
   };
 
+  const handleProfessionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProfession(event.target.value);
+  };
+
+  const handleReferralSourceChange = (value: string) => {
+    setReferralSource(value);
+    if (value !== "Other") {
+      setOtherReferralSource("");
+    }
+  };
+
+  const handleOtherReferralSourceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOtherReferralSource(event.target.value);
+  };
+
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const handleSubmit = async () => {
-    if (!name || !email) {
-      toast.error("Please fill in all fields 😠");
+    if (!name || !email || !referralSource) {
+      toast.error("Please fill in all required fields 😠");
+      return;
+    }
+
+    if (referralSource === "Other" && !otherReferralSource) {
+      toast.error("Please specify how you heard about us 😠");
       return;
     }
 
@@ -64,13 +87,23 @@ export default function Home() {
         }
         */
 
+        // Prepare referral source value
+        const finalReferralSource = referralSource === "Other" 
+          ? otherReferralSource 
+          : referralSource;
+
         // Proceed directly to insert into Notion
         const notionResponse = await fetch("/api/notion", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email }),
+          body: JSON.stringify({ 
+            name, 
+            email,
+            profession,
+            referralSource: finalReferralSource
+          }),
         });
 
         if (!notionResponse.ok) {
@@ -92,6 +125,9 @@ export default function Home() {
       success: (data) => {
         setName("");
         setEmail("");
+        setProfession("");
+        setReferralSource("");
+        setOtherReferralSource("");
         return "Thank you for joining the waitlist 🎉";
       },
       error: (error) => {
@@ -120,8 +156,14 @@ export default function Home() {
         <Form
           name={name}
           email={email}
+          profession={profession}
+          referralSource={referralSource}
+          otherReferralSource={otherReferralSource}
           handleNameChange={handleNameChange}
           handleEmailChange={handleEmailChange}
+          handleProfessionChange={handleProfessionChange}
+          handleReferralSourceChange={handleReferralSourceChange}
+          handleOtherReferralSourceChange={handleOtherReferralSourceChange}
           handleSubmit={handleSubmit}
           loading={loading}
         />
